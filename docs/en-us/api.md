@@ -290,145 +290,145 @@ unmountAllApps({ destroy: true, clearAliveState: true }).then(() => console.log(
 ```
 
 ## setData
-**描述：**向指定的子应用发送数据
+**Description:** Sends data to specified sub-app
 
-**介绍：**
+**Definition:**
 ```js
 setData(appName: String, data: Object)
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-// 发送数据给子应用 my-app，setData第二个参数只接受对象类型
-microApp.setData('my-app', {type: '新的数据'})
+// Send data to sub-app my-app, 2nd paramter of setData accepts only objects
+microApp.setData('my-app', {type: 'New data'})
 ```
 
 ## getData
-**描述：**获取指定的子应用data数据
+**Description:** Get data of sub-app
 
-**介绍：**
+**Definition:**
 ```js
 getData(appName: String): Object
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-const childData = microApp.getData('my-app') // 返回my-app子应用的data数据
+const childData = microApp.getData('my-app') // Returns data of my-app
 ```
 
 ## addDataListener
-**描述：**监听指定子应用的数据变化
+**Description:** Register listener for data changes in specified sub-app
 
-**介绍：**
+**Definition:**
 ```js
 /**
- * 绑定监听函数
- * appName: 应用名称
- * dataListener: 绑定函数
- * autoTrigger: 在初次绑定监听函数时如果有缓存数据，是否需要主动触发一次，默认为false
+ * Register listener
+ * appName: App name
+ * dataListener: Listener function
+ * autoTrigger: If there are cached data when register the listener, you need to actively trigger it once, default: false
  */
 microApp.addDataListener(appName: string, dataListener: Function, autoTrigger?: boolean)
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
 function dataListener (data) {
-  console.log('来自子应用my-app的数据', data)
+  console.log('Data from sup-app my-app', data)
 }
 
 microApp.addDataListener('my-app', dataListener)
 ```
 
 ## removeDataListener
-**描述：**解除基座绑定的指定子应用的数据监听函数
+**Description:** Unregister data listener for specified sub-app
 
-**使用方式：**
+**Usage:**
 
 ```js
 import microApp from '@micro-zoe/micro-app'
 
 function dataListener (data) {
-  console.log('来自子应用my-app的数据', data)
+  console.log('Data from sub-app my-app', data)
 }
 
-// 解绑监听my-app子应用的数据监听函数
+// Unregister listener that listens to my-app
 microApp.removeDataListener('my-app', dataListener)
 ```
 
 ## clearDataListener
-**描述：**清空基座绑定的指定子应用的所有数据监听函数
+**Description:** Clear all data listener for specified sub-app
 
-**使用方式：**
+**Usage:**
 
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-// 清空所有监听appName子应用的数据监听函数
+// Unregister all listeners that listen to my-app
 microApp.clearDataListener('my-app')
 ```
 
 
 ## getGlobalData
-**描述：**获取全局数据
+**Description:** Get global data
 
-**使用方式：**
+**Usage:**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-// 直接获取数据
-const globalData = microApp.getGlobalData() // 返回全局数据
+// Direct access to data
+const globalData = microApp.getGlobalData() // Returns global data
 ```
 
 
 ## addGlobalDataListener
-**描述：**绑定数据监听函数
+**Description:** Register data listener
 
-**介绍：**
+**Definition:**
 ```js
 /**
- * 绑定监听函数
- * dataListener: 绑定函数
- * autoTrigger: 在初次绑定监听函数时如果有缓存数据，是否需要主动触发一次，默认为false
+ * Register listener
+ * dataListener: Listener function
+ * autoTrigger: If there are cached data when register the listener, you need to actively trigger it once, default: false
  */
 microApp.addGlobalDataListener(dataListener: Function, autoTrigger?: boolean)
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
 function dataListener (data) {
-  console.log('全局数据', data)
+  console.log('Global data', data)
 }
 
 microApp.addGlobalDataListener(dataListener)
 ```
 
 ## removeGlobalDataListener
-**描述：**解绑全局数据监听函数
+**Description:** Unregister global data listener
 
-**使用方式：**
+**Usage:**
 
 ```js
 import microApp from '@micro-zoe/micro-app'
 
 function dataListener (data) {
-  console.log('全局数据', data)
+  console.log('Global data', data)
 }
 
 microApp.removeGlobalDataListener(dataListener)
 ```
 
 ## clearGlobalDataListener
-**描述：**清空基座应用绑定的所有全局数据监听函数
+**Description:** Clear all global data listener
 
-**使用方式：**
+**Usage:**
 
 ```js
 import microApp from '@micro-zoe/micro-app'
@@ -437,32 +437,32 @@ microApp.clearGlobalDataListener()
 ```
 
 ## setGlobalData
-**描述：**发送全局数据
+**Description:** Send global data
 
-**使用方式：**
+**Usage:**
 
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-// setGlobalData只接受对象作为参数
-microApp.setGlobalData({type: '全局数据'})
+// setGlobalData accepts only objects as parameter
+microApp.setGlobalData({type: 'New data'})
 ```
 
 
 <!--
   ---------------------------------------------------------------------
-  -------------------------------  分割线  -----------------------------
+  -------------------------------  Splitter  -----------------------------
   ---------------------------------------------------------------------
 -->
 
-# ** 子应用API **
+# ** Sub-App API **
 
 ## pureCreateElement
-**描述：**创建无绑定的纯净元素，该元素可以逃离元素隔离的边界，不受子应用沙箱的控制
+**Description:** Creates unbound, pure elements that escape the boundaries of element isolation and are not controlled by the sub-app sandbox
 
-**版本限制：** 0.8.2及以上版本
+**Version:** 0.8.2 or later
 
-**使用方式：**
+**Usage:**
 ```js
 const pureDiv = window.microApp.pureCreateElement('div')
 
@@ -471,39 +471,38 @@ document.body.appendChild(pureDiv)
 
 
 ## removeDomScope
-**描述：**解除元素绑定，通常用于受子应用元素绑定影响，导致基座元素错误绑定到子应用的情况
+**Description:** Unbinding an element, typically used in cases where the base element is incorrectly bound to the sub-app due to the influence of element binding of the sub-app
 
-**版本限制：** 0.8.2及以上版本
+**Version:** 0.8.2 or later
 
-**使用方式：**
+**Usage:**
 ```js
-// 重置作用域
+// Reset scope
 window.microApp.removeDomScope()
 ```
 
 ## rawWindow
-**描述：**获取真实的window
+**Description:** Get the native window
 
-**使用方式：**
+**Usage:**
 ```js
 window.rawWindow
 ```
 
 ## rawDocument
-**描述：**获取真实的document
+**Description:** Get the native document
 
-**使用方式：**
+**Usage:**
 ```js
 window.rawDocument
 ```
 
-
 ## getData
-**描述：**获取基座下发的data数据
+**Description:** Get the data sent down from the base app
 
-**使用方式：**
+**Usage:**
 ```js
-const data = window.microApp.getData() // 返回基座下发的data数据
+const data = window.microApp.getData() // Returns the data sent down by the base app
 ```
 
 ## addDataListener
