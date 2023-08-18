@@ -178,15 +178,15 @@ getAllApps() // [appName, appName, ...]
 import { version } from '@micro-zoe/micro-app'
 ```
 
-**Way 2** Use version attribute on the micro-app element
+**Way 2** Use version attribute of the micro-app element
 ```js
 document.querySelector('micro-app').version
 ```
 
 ## pureCreateElement
-**描述：**创建无绑定的纯净元素
+**Description:** Creates unbound pure element
 
-**使用方式：**
+**Usage:**
 ```js
 import { pureCreateElement } from '@micro-zoe/micro-app'
 
@@ -197,9 +197,9 @@ document.body.appendChild(pureDiv)
 
 
 ## removeDomScope
-**描述：**解除元素绑定，通常用于受子应用元素绑定影响，导致基座元素错误绑定到子应用的情况
+**Description:** Unbinding an element, typically used in cases where the base element is incorrectly bound to the sub-app due to the influence of the sub-app's element binding
 
-**使用方式：**
+**Usage:**
 ```js
 import { removeDomScope } from '@micro-zoe/micro-app'
 
@@ -209,39 +209,40 @@ removeDomScope()
 
 
 ## EventCenterForMicroApp
-**描述：**创建子应用通信对象，用于沙箱关闭时(如：vite)与子应用进行通信
+**Description:** Creates an object for communicating with the sub-app when the sandbox is closed (e.g., Vite)
 
-**使用方式：**
+**Usage:**
 ```js
 import { EventCenterForMicroApp } from '@micro-zoe/micro-app'
 
-// 每个子应用根据appName单独分配一个通信对象
+// Each sub-app gets a separate communication object based on the appName
 window.eventCenterForAppName = new EventCenterForMicroApp(appName)
 ```
 
-详情查看：[关闭沙箱后的通信方式](/zh-cn/data?id=关闭沙箱后的通信方式)
+For details, see: [How to communicate after closing the sandbox](/en-us/data?id=How to communicate after closing the sandbox)
 
 
 ## unmountApp
-**描述：**手动卸载应用
+**Description:** Unmount app manually
 
-**版本限制：** 0.6.1及以上版本
+**Version:** 0.6.1 or later
 
-**介绍：**
+**Definition:**
 ```js
 // unmountApp 参数配置
 interface unmountAppParams {
   /**
-   * destroy: 是否强制卸载应用并删除缓存资源，默认值：false
-   * 优先级: 高于 clearAliveState
-   * 对于已经卸载的应用: 当子应用已经卸载或keep-alive应用已经推入后台，则清除应用状态及缓存资源
-   * 对于正在运行的应用: 当子应用正在运行，则卸载应用并删除状态及缓存资源
+   * destroy: Force unmounting the app and delete cached resources, default: false
+   * Priority: Above clearAliveState
+   * For unmounted apps and keep-alive apps in background: App state and cached resources are cleared
+   * For running apps: App is unmounted and the state and cached resources will be cleared
    */
   destroy?: boolean;
   /**
-   * clearAliveState: 是否清空应用的缓存状态，默认值：false
-   * 解释: 如果子应用是keep-alive，则卸载并清空状态，并保留缓存资源，如果子应用不是keep-alive，则执行正常卸载流程，并保留缓存资源
-   * 补充: 无论keep-alive应用正在运行还是已经推入后台，都将执行卸载操作，清空应用缓存状态，并保留缓存资源
+   * clearAliveState: Clear the cache state of the app, default: false
+   * For keep-alive apps: Uninstall and clear the state and keep the cached resources
+   * For others: Perform the normal uninstallation process and keep the cached resources
+   * Addendum: Whether the keep-alive app is running or has been pushed into the background, the uninstall operation will be performed, app's cache state is cleared and the cached resources are preserved
    */
   clearAliveState?: boolean;
 }
@@ -249,19 +250,19 @@ interface unmountAppParams {
 function unmountApp(appName: string, options?: unmountAppParams): Promise<void>
 ```
 
-**使用方式：**
+**Usage:**
 ```js
-// 正常流程
-unmountApp(子应用名称).then(() => console.log('卸载成功'))
+// Normal
+unmountApp(appName).then(() => console.log('Unmounting successful'))
 
-// 卸载应用并清空缓存资源
-unmountApp(子应用名称, { destroy: true }).then(() => console.log('卸载成功'))
+// Unmount app and clear the cached resources
+unmountApp(appName, { destroy: true }).then(() => console.log('Unmounting successful'))
 
-// 如果子应用是keep-alive应用，则卸载并清空状态，如果子应用不是keep-alive应用，则正常卸载
-unmountApp(子应用名称, { clearAliveState: true }).then(() => console.log('卸载成功'))
+// Unmount and clear the state if the sub-app is keep-alive, or otherwise unmount normally
+unmountApp(appName, { clearAliveState: true }).then(() => console.log('Unmouting successful'))
 
-// 如果destroy和clearAliveState同时为true，则clearAliveState将失效
-unmountApp(子应用名称, { destroy: true, clearAliveState: true }).then(() => console.log('卸载成功'))
+// If both destroy and clearAliveState are true, clearAliveState will be ignored
+unmountApp(appName, { destroy: true, clearAliveState: true }).then(() => console.log('Unmounting successful'))
 ```
 
 ## unmountAllApps
