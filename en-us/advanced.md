@@ -53,7 +53,7 @@ For very frequent rendering and unmountig of sub-apps it is recommended to use U
 
 <!-- tabs:start -->
 
-#### ** React **
+#### **React**
 ```js
 // index.js
 import React from "react"
@@ -79,7 +79,7 @@ if (window.__MICRO_APP_ENVIRONMENT__) {
 }
 ```
 
-#### ** Vue2 **
+#### **Vue2**
 Uses `vue-router3.x`
 
 ```js
@@ -113,7 +113,7 @@ if (window.__MICRO_APP_ENVIRONMENT__) {
 }
 ```
 
-#### ** Vue3 **
+#### **Vue3**
 Uses `vue-router4.x`
 
 ```js
@@ -198,7 +198,7 @@ if (window.__MICRO_APP_ENVIRONMENT__) {
 ```
 
 
-#### ** Vite **
+#### **Vite**
 Because Vite closes the sandbox when it is used as a sub-app, the `__MICRO_APP_ENVIRONMENT__` and `__MICRO_APP_NAME__` variables are invalidated.
 So you need to determine whether it is the micro-frontend env or not manually and fill in the value of the app name.
 
@@ -245,7 +245,7 @@ if (isInMicroEnv) {
 }
 ```
 
-#### ** Others **
+#### **Others**
 ```js
 // entry.js
 
@@ -269,26 +269,26 @@ if (window.__MICRO_APP_ENVIRONMENT__) {
 ```
 <!-- tabs:end -->
 
-#### 自定义名称
+#### Customize name
 
-通常注册函数的形式为 `window['micro-app-${window.__MICRO_APP_NAME__}'] = {}`，但也支持自定义名称，`window['自定义的名称'] = {}`
+Normally the registration function is of the form `window['micro-app-${window.__MICRO_APP_NAME__}'] = {}`, but customized names are also supported: `window['custom-name'] = {}`.
 
-自定义的值需要在`<micro-app>`标签中通过`library`属性指定。
+Custom values need to be specified in the `library` attribute of the `<micro-app>` tag.
 
 ```html
 <micro-app
   name='xxx'
   url='xxx'
-  library='自定义的名称' 👈
+  library='custom-name' 👈
 ></micro-app>
 ```
 
 > [!NOTE]
 >
-> 1、mount和unmount方法都是必须的
+> 1. Both mount and unmount methods are required!
 >
-> 2、nextjs, nuxtjs等ssr框架作为子应用时暂不支持umd模式
+> 2. Next.js, Nuxt and other SSR frameworks do not support UMD mode when used as a sub-app.
 >
-> 3、因为注册了`unmount`函数，所以卸载监听事件 `window.addEventListener('unmount', () => {})` 就不需要了
+> 3. Since the `unmount` function is registered, unregistering the event listener `window.addEventListener('unmount', () => {})` is not required
 >
-> 4、umd模式下，因为初次渲染和后续渲染逻辑不同，可能会出现一些问题，如：[#138](https://github.com/micro-zoe/micro-app/issues/138)
+> 4. In UMD mode, because the initial and subsequent rendering logic are different, there may be some problems, see [#138](https://github.com/micro-zoe/micro-app/issues/138)
