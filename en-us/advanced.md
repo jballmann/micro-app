@@ -21,8 +21,8 @@ microApp.start({
     }
     
     const config = {
-      // fetch does not come with cookies by default, if you need to add cookies you need to configure credentials
-      credentials: 'include', // request with cookies
+      // Fetch does not come with cookies by default, if you need to add cookies you need to configure credentials
+      credentials: 'include', // Request with cookies
     }
 
     return window.fetch(url, Object.assign(options, config)).then((res) => {
@@ -60,27 +60,27 @@ import React from "react"
 import ReactDOM from "react-dom"
 import App from './App'
 
-// 👇 将渲染操作放入 mount 函数 -- 必填
+// 👇 Put rendering into the mount function -- Required
 export function mount () {
   ReactDOM.render(<App />, document.getElementById("root"))
 }
 
-// 👇 将卸载操作放入 unmount 函数 -- 必填
+// 👇 Put the unmounting into the unmount function -- Required
 export function unmount () {
   ReactDOM.unmountComponentAtNode(document.getElementById("root"))
 }
 
-// 微前端环境下，注册mount和unmount方法
+// Registering mount and unmount methods in the micro-frontend env
 if (window.__MICRO_APP_ENVIRONMENT__) {
   window[`micro-app-${window.__MICRO_APP_NAME__}`] = { mount, unmount }
 } else {
-  // 非微前端环境直接渲染
+  // Direct rendering in non-micro-frontend env
   mount()
 }
 ```
 
 #### ** Vue2 **
-这里只介绍配合`vue-router3.x`的用法
+Uses `vue-router3.x`
 
 ```js
 // main.js
@@ -89,7 +89,7 @@ import router from './router'
 import App from './App.vue'
 
 let app = null
-// 👇 将渲染操作放入 mount 函数 -- 必填
+// 👇 Put rendering into the mount function -- Required
 function mount () {
   app = new Vue({
     router,
@@ -97,24 +97,24 @@ function mount () {
   }).$mount('#app')
 }
 
-// 👇 将卸载操作放入 unmount 函数 -- 必填
+// 👇 Put the unmounting into the unmount function -- Required
 function unmount () {
   app.$destroy()
   app.$el.innerHTML = ''
   app = null
 }
 
-// 微前端环境下，注册mount和unmount方法
+// Registering mount and unmount methods in the micro-frontend env
 if (window.__MICRO_APP_ENVIRONMENT__) {
   window[`micro-app-${window.__MICRO_APP_NAME__}`] = { mount, unmount }
 } else {
-  // 非微前端环境直接渲染
+  // Direct rendering in non-micro-frontend env
   mount()
 }
 ```
 
 #### ** Vue3 **
-这里只介绍配合`vue-router4.x`的用法
+Uses `vue-router4.x`
 
 ```js
 // main.js
@@ -126,7 +126,7 @@ import App from './App.vue'
 let app = null
 let router = null
 let history = null
-// 👇 将渲染操作放入 mount 函数 -- 必填
+// 👇 Put rendering into the mount function -- Required
 function mount () {
   history = VueRouter.createWebHistory(window.__MICRO_APP_BASE_ROUTE__ || '/')
   router = VueRouter.createRouter({
@@ -139,7 +139,7 @@ function mount () {
   app.mount('#app')
 }
 
-// 👇 将卸载操作放入 unmount 函数 -- 必填
+// 👇 Put the unmounting into the unmount function -- Required
 function unmount () {
   app.unmount()
   history.destroy()
@@ -148,17 +148,17 @@ function unmount () {
   history = null
 }
 
-// 微前端环境下，注册mount和unmount方法
+// Registering mount and unmount methods in the micro-frontend env
 if (window.__MICRO_APP_ENVIRONMENT__) {
   window[`micro-app-${window.__MICRO_APP_NAME__}`] = { mount, unmount }
 } else {
-  // 非微前端环境直接渲染
+  // Direct rendering in non-micro-frontend env
   mount()
 }
 ```
 
 #### ** Angular **
-以`angular11`为例。
+Uses `Angular 11`
 
 ```js
 // main.ts
@@ -174,34 +174,35 @@ declare global {
 }
 
 let app = null;
-// 👇 将渲染操作放入 mount 函数 -- 必填
+// 👇 Put rendering into the mount function -- Required
 async function mount () {
   app = await platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch(err => console.error(err))
 }
 
-// 👇 将卸载操作放入 unmount 函数 -- 必填
+// 👇 Put the unmounting into the unmount function -- Required
 function unmount () {
-  // angular在部分场景下执行destroy时会删除根元素app-root，此时可删除app.destroy()以避免这个问题
+  // Angular will delete the root element app-root when executing destroy in some scenarios, you can delete app.destroy() to avoid this issue
   app.destroy();
   app = null;
 }
 
-// 微前端环境下，注册mount和unmount方法
+// Registering mount and unmount methods in the micro-frontend env
 if (window.__MICRO_APP_ENVIRONMENT__) {
   window[`micro-app-${window.__MICRO_APP_NAME__}`] = { mount, unmount }
 } else {
-  // 非微前端环境直接渲染
+  // Direct rendering in non-micro-frontend env
   mount();
 }
 ```
 
 
 #### ** Vite **
-因为vite作为子应用时关闭了沙箱，导致`__MICRO_APP_ENVIRONMENT__`和`__MICRO_APP_NAME__`两个变量失效，所以需要自行判断是否微前端环境以及手动填写应用name值。
+Because Vite closes the sandbox when it is used as a sub-app, the `__MICRO_APP_ENVIRONMENT__` and `__MICRO_APP_NAME__` variables are invalidated.
+So you need to determine whether it is the micro-frontend env or not manually and fill in the value of the app name.
 
-这里以 vue3 + vue-router4 为例：
+Example for Vue3 + vue-router4:
 ```js
 // main.js
 import { createApp } from 'vue'
@@ -212,7 +213,7 @@ import App from './App.vue'
 let app = null
 let router = null
 let history = null
-// 👇 将渲染操作放入 mount 函数 -- 必填
+// 👇 Put rendering into the mount function -- Required
 function mount () {
   history = VueRouter.createWebHashHistory()
   router = VueRouter.createRouter({
@@ -225,7 +226,7 @@ function mount () {
   app.mount('#app')
 }
 
-// 👇 将卸载操作放入 unmount 函数 -- 必填
+// 👇 Put the unmounting into the unmount function -- Required
 function unmount () {
   app.unmount()
   history.destroy()
@@ -234,35 +235,35 @@ function unmount () {
   history = null
 }
 
-// 微前端环境下，注册mount和unmount方法
-if (如果是微前端环境) {
-  // 应用的name值，即 <micro-app> 元素的name属性值
-  window[`micro-app-${应用的name值}`] = { mount, unmount }
+// Registering mount and unmount methods in the micro-frontend env
+if (isInMicroEnv) {
+  // The name of the app, i.e. the value of the name attribute of the <micro-app> element
+  window[`micro-app-${appName}`] = { mount, unmount }
 } else {
-  // 非微前端环境直接渲染
+  // Direct rendering in non-micro-frontend env
   mount()
 }
 ```
 
-#### ** 其它 **
+#### ** Others **
 ```js
 // entry.js
 
-// 👇 将渲染操作放入 mount 函数 -- 必填
+// 👇 Put rendering into the mount function -- Required
 function mount () {
   ...
 }
 
-// 👇 将卸载操作放入 unmount 函数 -- 必填
+// 👇 Put the unmounting into the unmount function -- Required
 function unmount () {
   ...
 }
 
-// 微前端环境下，注册mount和unmount方法
+// Registering mount and unmount methods in the micro-frontend env
 if (window.__MICRO_APP_ENVIRONMENT__) {
   window[`micro-app-${window.__MICRO_APP_NAME__}`] = { mount, unmount }
 } else {
-  // 非微前端环境直接渲染
+  // Direct rendering in non-micro-frontend env
   mount()
 }
 ```
