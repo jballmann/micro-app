@@ -1,6 +1,6 @@
 <!-- tabs:start -->
 
-# ** Base App API **
+# **Base App API**
 ## start
 **Description:** micro-app registration function, executed globally once
 
@@ -98,9 +98,9 @@ microApp.start()
 ```
 
 ## preFetch
-**描述：**预加载，在浏览器空闲时间，依照开发者传入的顺序，依次加载每个应用的静态资源
+**Description:** Preloading, loads static resources in the order in which they were passed in during the browser's idle time
 
-**介绍：**
+**Definition:**
 ```js
 preFetch([
   {
@@ -112,17 +112,17 @@ preFetch([
 ])
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import { preFetch } from '@micro-zoe/micro-app'
 
-// 方式一
+// Option 1
 preFetch([
   { name: 'my-app1', url: 'xxx' },
   { name: 'my-app2', url: 'xxx' },
 ])
 
-// 方式二
+// Option 2
 preFetch(() => [
   { name: 'my-app1', url: 'xxx' },
   { name: 'my-app2', url: 'xxx' },
@@ -131,54 +131,54 @@ preFetch(() => [
 
 
 ## getActiveApps
-**描述：**获取正在运行的子应用，不包含已卸载和预加载的应用
+**Description:** Get all running sub-apps, excluding uninstalled and preloaded
 
-**版本限制：** 0.5.2及以上版本
+**Version:** 0.5.2 or later
 
-**介绍：**
+**Definition:**
 ```js
 /**
- * @param excludeHiddenApp 是否过滤处于隐藏状态的keep-alive应用，默认false
+ * @param excludeHiddenApp Filter keep-alive applications that are in the hidden state, default: false
  */
 function getActiveApps(excludeHiddenApp?: boolean): string[]
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import { getActiveApps } from '@micro-zoe/micro-app'
 
-getActiveApps() // [子应用name, 子应用name, ...]
+getActiveApps() // [appName, appName, ...]
 
-getActiveApps(true) // 处于隐藏状态的keep-alive将会被过滤
+getActiveApps(true) // Keep-alive in the hidden state will be filtered
 ```
 
 ## getAllApps
-**描述：**获取所有子应用，包含已卸载和预加载的应用
+**Description:**  Get all sub-apps, including uninstalled and pre-loaded
 
-**版本限制：** 0.5.2及以上版本
+**Version:** 0.5.2 or later
 
-**介绍：**
+**Definition:**
 ```js
 function getAllApps(): string[]
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import { getAllApps } from '@micro-zoe/micro-app'
 
-getAllApps() // [子应用name, 子应用name, ...]
+getAllApps() // [appName, appName, ...]
 ```
 
 
 ## version
-**描述：**查看版本号
+**Description:** Get version
 
-**方式1：**
+**Way 1**
 ```js
 import { version } from '@micro-zoe/micro-app'
 ```
 
-**方式2：**通过micro-app元素上的version属性查看
+**Way 2** Use version attribute on the micro-app element
 ```js
 document.querySelector('micro-app').version
 ```
