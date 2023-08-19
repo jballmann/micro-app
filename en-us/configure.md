@@ -188,7 +188,7 @@ When the sub-app doesn't need to load a certain JS or CSS, you can set the `excl
 ### ignore (ignore elements)
 When a link, script or style element has the `ignore` attribute, the micro-app will not process it and the element will be rendered untouched.
 
-Usage with：jsonp
+Example with jsonp
 
 jsonp will create a script element to load the data. Under normal circumstances the script will be intercepted, which results in jsonp request failure. Here, you can add the `ignore` attribute to the script element to skip the interception.
 
