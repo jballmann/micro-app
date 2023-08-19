@@ -378,60 +378,60 @@ microApp.clearDataListener('my-app')
 
 
 ## getGlobalData
-**描述：**获取全局数据
+**Description:** Get global data
 
-**使用方式：**
+**Usage:**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-// 直接获取数据
-const globalData = microApp.getGlobalData() // 返回全局数据
+// Direct access to data
+const globalData = microApp.getGlobalData() // Returns global data
 ```
 
 
 ## addGlobalDataListener
-**描述：**绑定数据监听函数
+**Description:** Register data listener
 
-**介绍：**
+**Definition:**
 ```js
 /**
- * 绑定监听函数
- * dataListener: 绑定函数
- * autoTrigger: 在初次绑定监听函数时如果有缓存数据，是否需要主动触发一次，默认为false
+ * Register listener
+ * dataListener: Listener function
+ * autoTrigger: If there are cached data when first binding the listener function, you need to actively trigger it once, default: false
  */
 microApp.addGlobalDataListener(dataListener: Function, autoTrigger?: boolean)
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
 function dataListener (data) {
-  console.log('全局数据', data)
+  console.log('Global data', data)
 }
 
 microApp.addGlobalDataListener(dataListener)
 ```
 
 ## removeGlobalDataListener
-**描述：**解绑全局数据监听函数
+**Description:** Unregister global data listener
 
-**使用方式：**
+**Usage:**
 
 ```js
 import microApp from '@micro-zoe/micro-app'
 
 function dataListener (data) {
-  console.log('全局数据', data)
+  console.log('Global data', data)
 }
 
 microApp.removeGlobalDataListener(dataListener)
 ```
 
 ## clearGlobalDataListener
-**描述：**清空基座应用绑定的所有全局数据监听函数
+**Description:** Clear all global data listener
 
-**使用方式：**
+**Usage:**
 
 ```js
 import microApp from '@micro-zoe/micro-app'
@@ -440,15 +440,15 @@ microApp.clearGlobalDataListener()
 ```
 
 ## setGlobalData
-**描述：**发送全局数据
+**Description:** Send global data
 
-**使用方式：**
+**Usage:**
 
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-// setGlobalData只接受对象作为参数
-microApp.setGlobalData({type: '全局数据'})
+// setGlobalData only accepts an object as argument
+microApp.setGlobalData({type: 'New data'})
 ```
 
 
