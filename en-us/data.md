@@ -49,7 +49,7 @@ There are two ways in which the base app can send data to the sub-app:
 
 <!-- tabs:start -->
 
-#### ** React **
+#### **React**
 In React we need to use a polyfill.
 
 Add polyfill including comments at the top of the file where the `<micro-app>` element is located.
@@ -207,106 +207,95 @@ window.microApp.setGlobalData({type: 'New global data'})
 <!-- tabs:end -->
 
 
-#### 获取全局数据
+#### Getting global data
 
 <!-- tabs:start -->
 
-#### ** 基座应用 **
+#### **Base App**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-// 直接获取数据
-const globalData = microApp.getGlobalData() // 返回全局数据
+// Direct access to data
+const globalData = microApp.getGlobalData() // Returns global data
 
 function dataListener (data) {
-  console.log('全局数据', data)
+  console.log('Global data', data)
 }
 
-/**
- * 绑定监听函数
- * dataListener: 绑定函数
- * autoTrigger: 在初次绑定监听函数时如果有缓存数据，是否需要主动触发一次，默认为false
- */
+// See API for details
 microApp.addGlobalDataListener(dataListener: Function, autoTrigger?: boolean)
 
-// 解绑监听函数
+// Unregister global data listener
 microApp.removeGlobalDataListener(dataListener: Function)
 
-// 清空基座应用绑定的所有全局数据监听函数
+// Clear all global data listener bound to base app
 microApp.clearGlobalDataListener()
 ```
 
-#### ** 子应用 **
+#### **Sub-App**
 
 ```js
-// 直接获取数据
-const globalData = window.microApp.getGlobalData() // 返回全局数据
+// Direct access to data
+const globalData = window.microApp.getGlobalData() // Returns global data
 
 function dataListener (data) {
-  console.log('全局数据', data)
+  console.log('Global data', data)
 }
 
-/**
- * 绑定监听函数
- * dataListener: 绑定函数
- * autoTrigger: 在初次绑定监听函数时如果有缓存数据，是否需要主动触发一次，默认为false
- */
+// See API for details
 window.microApp.addGlobalDataListener(dataListener: Function, autoTrigger?: boolean)
 
-// 解绑监听函数
+// Unregister global data listener
 window.microApp.removeGlobalDataListener(dataListener: Function)
 
-// 清空当前子应用绑定的所有全局数据监听函数
+// Clear all global data listener bound to sub-app
 window.microApp.clearGlobalDataListener()
 ```
 <!-- tabs:end -->
 
 
-## 关闭沙箱后的通信方式
-沙箱关闭后，子应用默认的通信功能失效，此时可以通过手动注册通信对象实现一致的功能。
+## Communication methods after closing the sandbox
+After the sandbox is closed, the default communication function of the sub-app is disabled.
+At this time, you can manually register the communication object to realize the consistent function.
 
-**注册方式：在基座应用中为子应用初始化通信对象**
+**Registration method: Initialize the communication object for the sub-app in the base app**
 
 ```js
 import { EventCenterForMicroApp } from '@micro-zoe/micro-app'
 
-// 注意：每个子应用根据appName单独分配一个通信对象
+// Note: Each sub-app is assigned a separate communication object based on the appName
 window.eventCenterForAppxx = new EventCenterForMicroApp(appName)
 ```
 
-子应用就可以通过注册的`eventCenterForAppxx`对象进行通信，其api和`window.microApp`一致，*基座通信方式没有任何变化。*
+The sub-app can then communicate through the registered `eventCenterForAppxx` object. The API is the same as `window.microApp`, and there is no change in the way the base communicates.
 
-**子应用通信方式：**
+**Sub-app communication method：**
 ```js
-// 直接获取数据
-const data = window.eventCenterForAppxx.getData() // 返回data数据
+// Direct access to data
+const data = window.eventCenterForAppxx.getData() // Return data
 
 function dataListener (data) {
-  console.log('来自基座应用的数据', data)
+  console.log('Data from the base app', data)
 }
 
-/**
- * 绑定监听函数
- * dataListener: 绑定函数
- * autoTrigger: 在初次绑定监听函数时如果有缓存数据，是否需要主动触发一次，默认为false
- */
+// See API of normal addDataListener
 window.eventCenterForAppxx.addDataListener(dataListener: Function, autoTrigger?: boolean)
 
-// 解绑监听函数
+// Unregister listener
 window.eventCenterForAppxx.removeDataListener(dataListener: Function)
 
-// 清空当前子应用的所有绑定函数(全局数据函数除外)
+// Clear all listener (except global) of the current sub-app
 window.eventCenterForAppxx.clearDataListener()
 
-// 子应用向基座应用发送数据，只接受对象作为参数
-window.eventCenterForAppxx.dispatch({type: '子应用发送的数据'})
+// The sub-app sends data to the base app, acceps only an objects as argument
+window.eventCenterForAppxx.dispatch({type: 'Data sent by the sub-app'})
 ```
 
 
 > [!TIP]
 >
-> 1、data只接受对象类型
+> 1. data accepts only objects
 >
-> 2、数据变化时会进行严格对比(===)，相同的data对象不会触发更新。
+> 2. Strict comparisons (===) are made when data changes, and identical data objects do not trigger updates
 >
-> 3、在子应用卸载时，子应用中所有的数据绑定函数会自动解绑，基座应用中的数据解绑需要开发者手动处理。
+> 3. When the sub-app is unmounted, all listeners in the sub-app are automatically unregistered. Listener in the base app needs to be handled manually by the developer.
