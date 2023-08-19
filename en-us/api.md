@@ -454,18 +454,18 @@ microApp.setGlobalData({type: 'New data'})
 
 <!--
   ---------------------------------------------------------------------
-  -------------------------------  分割线  -----------------------------
+  -------------------------------  Splitter  -----------------------------
   ---------------------------------------------------------------------
 -->
 
-# ** 子应用API **
+# **Sub-App API**
 
 ## pureCreateElement
-**描述：**创建无绑定的纯净元素，该元素可以逃离元素隔离的边界，不受子应用沙箱的控制
+**Description:** Create unbound, pure elements that escape the boundaries of element isolation and are not controlled by the sub-app sandbox
 
-**版本限制：** 0.8.2及以上版本
+**Version:** 0.8.2 or later
 
-**使用方式：**
+**Usage:**
 ```js
 const pureDiv = window.microApp.pureCreateElement('div')
 
@@ -474,160 +474,158 @@ document.body.appendChild(pureDiv)
 
 
 ## removeDomScope
-**描述：**解除元素绑定，通常用于受子应用元素绑定影响，导致基座元素错误绑定到子应用的情况
+**Description:** Unbinding an element, typically used in cases where the base element is incorrectly bound to the sub-app due to the influence of the sub-app's element binding
 
-**版本限制：** 0.8.2及以上版本
+**Version:** 0.8.2 or later
 
-**使用方式：**
+**Usage:**
 ```js
-// 重置作用域
+// Reset scope
 window.microApp.removeDomScope()
 ```
 
 ## rawWindow
-**描述：**获取真实的window
+**Description:** Get native window
 
-**使用方式：**
+**Usage:**
 ```js
 window.rawWindow
 ```
 
 ## rawDocument
-**描述：**获取真实的document
+**Description:** Get native document
 
-**使用方式：**
+**Usage:**
 ```js
 window.rawDocument
 ```
 
 
 ## getData
-**描述：**获取基座下发的data数据
+**Description:** Get data sent down from the base
 
-**使用方式：**
+**Usage:**
 ```js
-const data = window.microApp.getData() // 返回基座下发的data数据
+const data = window.microApp.getData() // Returns the data sent down by the base
 ```
 
 ## addDataListener
-**描述：**绑定数据监听函数
+**Description:** Register data listener
 
-**介绍：**
+**Definition:**
 ```js
 /**
- * 绑定监听函数，监听函数只有在数据变化时才会触发
- * dataListener: 绑定函数
- * autoTrigger: 在初次绑定监听函数时如果有缓存数据，是否需要主动触发一次，默认为false
- * !!!重要说明: 因为子应用是异步渲染的，而基座发送数据是同步的，
- * 如果在子应用渲染结束前基座应用发送数据，则在绑定监听函数前数据已经发送，在初始化后不会触发绑定函数，
- * 但这个数据会放入缓存中，此时可以设置autoTrigger为true主动触发一次监听函数来获取数据。
+ * Register listener that is only triggered when the data changes
+ * dataListener: Listener function
+ * autoTrigger: If there are cached data when first binding the listener function, you need to actively trigger it once, default: false
+ * !!!IMPORTANT: Because the sub-app is rendered asynchronously and the base sends the data synchronously, the base app sends the data before the sub-app is rendered and the data listener is registered. The listener will not be triggered after initialization by default. But the data will be put into the cache and you can set autoTrigger to true to actively trigger the listener function to get the data once.
  */
 window.microApp.addDataListener(dataListener: Function, autoTrigger?: boolean)
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 function dataListener (data) {
-  console.log('来自基座应用的数据', data)
+  console.log('Data from base app', data)
 }
 
 window.microApp.addDataListener(dataListener)
 ```
 
 ## removeDataListener
-**描述：**解绑数据监听函数
+**Description:** Unregister data listener
 
-**使用方式：**
+**Usage:**
 
 ```js
 function dataListener (data) {
-  console.log('来自基座应用的数据', data)
+  console.log('Data from base app', data)
 }
 
 window.microApp.removeDataListener(dataListener)
 ```
 
 ## clearDataListener
-**描述：**清空当前子应用的所有数据监听函数(全局数据函数除外)
+**Description:** Clear all data listener (except global) for the current sub-app
 
-**使用方式：**
+**Usage:**
 
 ```js
 window.microApp.clearDataListener()
 ```
 
 ## dispatch
-**描述：**向基座应用发送数据
+**Description:** Send data to the base application
 
-**使用方式：**
+**Usage:**
 
 ```js
-// dispatch只接受对象作为参数
-window.microApp.dispatch({type: '子应用发送的数据'})
+// dispatch only accepts an objects as argument
+window.microApp.dispatch({type: 'Data from sub-app'})
 ```
 
 
 ## getGlobalData
-**描述：**获取全局数据
+**Description:** Get global data
 
-**使用方式：**
+**Usage:**
 ```js
-const globalData = window.microApp.getGlobalData() // 返回全局数据
+const globalData = window.microApp.getGlobalData() // Returns global data
 ```
 
 
 ## addGlobalDataListener
-**描述：**绑定数据监听函数
+**Description:** Register data listener
 
-**介绍：**
+**Definition:**
 ```js
 /**
- * 绑定监听函数
- * dataListener: 绑定函数
- * autoTrigger: 在初次绑定监听函数时如果有缓存数据，是否需要主动触发一次，默认为false
+ * Register listener
+ * dataListener: Listener function
+ * autoTrigger: If there are cached data when first binding the listener function, you need to actively trigger it once, default: false
  */
 window.microApp.addGlobalDataListener(dataListener: Function, autoTrigger?: boolean)
 
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 function dataListener (data) {
-  console.log('全局数据', data)
+  console.log('Global data', data)
 }
 
 window.microApp.addGlobalDataListener(dataListener)
 ```
 
 ## removeGlobalDataListener
-**描述：**解绑全局数据监听函数
+**Description:** Unregister global data listener
 
-**使用方式：**
+**Usage:**
 
 ```js
 function dataListener (data) {
-  console.log('全局数据', data)
+  console.log('Global data', data)
 }
 
 window.microApp.removeGlobalDataListener(dataListener)
 ```
 
 ## clearGlobalDataListener
-**描述：**清空当前子应用绑定的所有全局数据监听函数
+**Description:** Clear all global data listener
 
-**使用方式：**
+**Usage:**
 
 ```js
 window.microApp.clearGlobalDataListener()
 ```
 
 ## setGlobalData
-**描述：**发送全局数据
+**Description:** Send global data
 
-**使用方式：**
+**Usage:**
 
 ```js
-// setGlobalData只接受对象作为参数
+// setGlobalData only accepts an object as argument
 window.microApp.setGlobalData({type: '全局数据'})
 ```
 <!-- tabs:end -->
