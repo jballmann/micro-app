@@ -203,7 +203,7 @@ document.body.appendChild(pureDiv)
 ```js
 import { removeDomScope } from '@micro-zoe/micro-app'
 
-// 重置作用域
+// Reset scope
 removeDomScope()
 ```
 
@@ -229,7 +229,7 @@ For details, see: [How to communicate after closing the sandbox](/en-us/data?id=
 
 **Definition:**
 ```js
-// unmountApp 参数配置
+// unmountApp params
 interface unmountAppParams {
   /**
    * destroy: Force unmounting the app and delete cached resources, default: false
@@ -266,128 +266,113 @@ unmountApp(appName, { destroy: true, clearAliveState: true }).then(() => console
 ```
 
 ## unmountAllApps
-**描述：**手动卸载所有应用
+**Description:** Unmount all apps manually
 
-**版本限制：** 0.6.1及以上版本
+**Version:** 0.6.1 or later
 
-**介绍：**
+**Definition:**
 ```js
-// unmountAllApps 参数配置
-interface unmountAppParams {
-  /**
-   * destroy: 是否强制卸载应用并删除缓存资源，默认值：false
-   * 优先级: 高于 clearAliveState
-   * 对于已经卸载的应用: 当子应用已经卸载或keep-alive应用已经推入后台，则清除应用状态及缓存资源
-   * 对于正在运行的应用: 当子应用正在运行，则卸载应用并删除状态及缓存资源
-   */
-  destroy?: boolean;
-  /**
-   * clearAliveState: 是否清空应用的缓存状态，默认值：false
-   * 解释: 如果子应用是keep-alive，则卸载并清空状态，并保留缓存资源，如果子应用不是keep-alive，则执行正常卸载流程，并保留缓存资源
-   * 补充: 无论keep-alive应用正在运行还是已经推入后台，都将执行卸载操作，清空应用缓存状态，并保留缓存资源
-   */
-  clearAliveState?: boolean;
-}
+// See unmountAppParams at unmountApp
 
 function unmountAllApps(appName: string, options?: unmountAppParams): Promise<void>
 ```
 
-**使用方式：**
+**Usage:**
 ```js
-// 正常流程
+// Normal
 unmountAllApps().then(() => console.log('卸载成功'))
 
-// 卸载所有应用并清空缓存资源
+// Unmount app and clear the cached resources
 unmountAllApps({ destroy: true }).then(() => console.log('卸载成功'))
 
-// 如果子应用是keep-alive应用，则卸载并清空状态，如果子应用不是keep-alive应用，则正常卸载
+// Unmount and clear the state if the sub-app is keep-alive, or otherwise unmount normally
 unmountAllApps({ clearAliveState: true }).then(() => console.log('卸载成功'))
 
-// 如果destroy和clearAliveState同时为true，则clearAliveState将失效
+// If both destroy and clearAliveState are true, clearAliveState will be ignored
 unmountAllApps({ destroy: true, clearAliveState: true }).then(() => console.log('卸载成功'))
 ```
 
 ## setData
-**描述：**向指定的子应用发送数据
+**Description:** Send data to the specified app
 
-**介绍：**
+**Definition:**
 ```js
 setData(appName: String, data: Object)
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-// 发送数据给子应用 my-app，setData第二个参数只接受对象类型
-microApp.setData('my-app', {type: '新的数据'})
+// Send data to the sub-app my-app, the second parameter of setData accepts only an object
+microApp.setData('my-app', {type: 'New data'})
 ```
 
 ## getData
-**描述：**获取指定的子应用data数据
+**Description:** Get the data of the specified sub-app
 
-**介绍：**
+**Definition:**
 ```js
 getData(appName: String): Object
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-const childData = microApp.getData('my-app') // 返回my-app子应用的data数据
+const childData = microApp.getData('my-app') // Returns data of the my-app sub-app
 ```
 
 ## addDataListener
-**描述：**监听指定子应用的数据变化
+**Description:** Register listener for data changes in the specified sub-app
 
-**介绍：**
+**Definition:**
 ```js
 /**
- * 绑定监听函数
- * appName: 应用名称
- * dataListener: 绑定函数
- * autoTrigger: 在初次绑定监听函数时如果有缓存数据，是否需要主动触发一次，默认为false
+ * Register listener
+ * appName: App name
+ * dataListener: Listener function
+ * autoTrigger: If there are cached data when first binding the listener function, you need to actively trigger it once, default: false
  */
 microApp.addDataListener(appName: string, dataListener: Function, autoTrigger?: boolean)
 ```
 
-**使用方式：**
+**Usage:**
 ```js
 import microApp from '@micro-zoe/micro-app'
 
 function dataListener (data) {
-  console.log('来自子应用my-app的数据', data)
+  console.log('Data from the sub-app my-app', data)
 }
 
 microApp.addDataListener('my-app', dataListener)
 ```
 
 ## removeDataListener
-**描述：**解除基座绑定的指定子应用的数据监听函数
+**Description:** Unregister the data listener for the specified sub-app
 
-**使用方式：**
+**Usage:**
 
 ```js
 import microApp from '@micro-zoe/micro-app'
 
 function dataListener (data) {
-  console.log('来自子应用my-app的数据', data)
+  console.log('Data from the sub-app my-app', data)
 }
 
-// 解绑监听my-app子应用的数据监听函数
+// Remove the data-listening function that listens to my-app
 microApp.removeDataListener('my-app', dataListener)
 ```
 
 ## clearDataListener
-**描述：**清空基座绑定的指定子应用的所有数据监听函数
+**Description:** Clear all data listener for the specified sub-app
 
-**使用方式：**
+**Usage:**
 
 ```js
 import microApp from '@micro-zoe/micro-app'
 
-// 清空所有监听appName子应用的数据监听函数
+// Clear all data listener that listens to my-app
 microApp.clearDataListener('my-app')
 ```
 
