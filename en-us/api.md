@@ -626,6 +626,6 @@ window.microApp.clearGlobalDataListener()
 
 ```js
 // setGlobalData only accepts an object as argument
-window.microApp.setGlobalData({type: '全局数据'})
+window.microApp.setGlobalData({type: 'New global data'})
 ```
 <!-- tabs:end -->
